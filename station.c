@@ -496,36 +496,28 @@ void order_train(TrainStation *station, int platform) {
  */
 void fix_overload_train(TrainStation *station) {
     int peron = find_overload_train(station) , greutate = 0 , greutate_de_eleim , gasit = 0 , tmp=1  , poz_vag_de_elim , pos = 1 , poz;
-    TTrainCar aux , aux1 , vag_de_elim , prev , vag_elim2 ;
-    printf("--------------------------\nperonul cu probleme : %d \n" , peron);
+    TTrainCar aux , aux1 , vag_de_elim , prev , vag_elim2 , prev2;
     if (peron != -1) {
         aux = station->platforms[peron]->train_cars;
         while (aux!=NULL) {
             greutate += aux->weight;
             aux=aux->next;
         }
-        printf("\nputere locomotiva : %d    greutate vagoane : %d\n" , station->platforms[peron]->locomotive_power , greutate);
 
         greutate_de_eleim = greutate - station->platforms[peron]->locomotive_power;
-        printf("GREUTATE DE ELIMINAT : %d\n\n" , greutate_de_eleim);
 
         aux1 = station->platforms[peron]->train_cars;
-        while (aux1!=NULL) {
+        while (aux1!=NULL && gasit == 0) {
             if (greutate_de_eleim == aux1->weight) {
                 vag_de_elim = aux1;
                 gasit = 1;
                 poz_vag_de_elim = tmp;
-                printf("greutate vad de elim - %d \n " , vag_de_elim->weight);
             } else {
                 prev = aux1;
-                printf("greutate prev vad de elim - %d \n" , prev->weight);
             }
             aux1 = aux1->next;
             tmp++;
         }
-        printf("poz vag de elim %d \n" , poz_vag_de_elim);
-        printf("greutate vad de elim - %d \n " , vag_de_elim->weight);
-        printf("greutate prev vad de elim - %d \n" , prev->weight);
         if (gasit == 1) {
             if (poz_vag_de_elim > 1) {
                 prev->next = vag_de_elim->next;
@@ -554,10 +546,7 @@ void fix_overload_train(TrainStation *station) {
             if (poz == 1) {
                 station->platforms[peron]->train_cars = vag_elim2->next;
                 free(vag_elim2);
-            } else {
-
             }
-            printf("-----pos vag de elim dupa cautare = %d----------\n" , poz);
         }
     }
 }
