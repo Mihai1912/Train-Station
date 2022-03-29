@@ -495,9 +495,9 @@ void order_train(TrainStation *station, int platform) {
  * station: gara existenta
  */
 void fix_overload_train(TrainStation *station) {
-    int peron = find_overload_train(station) , greutate = 0 , greutate_de_eleim;
-    TTrainCar aux ;
-    printf("peronul cu probleme : %d \n" , peron);
+    int peron = find_overload_train(station) , greutate = 0 , greutate_de_eleim , gasit = 0 , tmp=1  , poz_vag_de_elim , pos = 1 , poz;
+    TTrainCar aux , aux1 , vag_de_elim , prev , vag_elim2 ;
+    printf("--------------------------\nperonul cu probleme : %d \n" , peron);
     if (peron != -1) {
         aux = station->platforms[peron]->train_cars;
         while (aux!=NULL) {
@@ -509,7 +509,55 @@ void fix_overload_train(TrainStation *station) {
         greutate_de_eleim = greutate - station->platforms[peron]->locomotive_power;
         printf("GREUTATE DE ELIMINAT : %d\n\n" , greutate_de_eleim);
 
+        aux1 = station->platforms[peron]->train_cars;
+        while (aux1!=NULL) {
+            if (greutate_de_eleim == aux1->weight) {
+                vag_de_elim = aux1;
+                gasit = 1;
+                poz_vag_de_elim = tmp;
+                printf("greutate vad de elim - %d \n " , vag_de_elim->weight);
+            } else {
+                prev = aux1;
+                printf("greutate prev vad de elim - %d \n" , prev->weight);
+            }
+            aux1 = aux1->next;
+            tmp++;
+        }
+        printf("poz vag de elim %d \n" , poz_vag_de_elim);
+        printf("greutate vad de elim - %d \n " , vag_de_elim->weight);
+        printf("greutate prev vad de elim - %d \n" , prev->weight);
+        if (gasit == 1) {
+            if (poz_vag_de_elim > 1) {
+                prev->next = vag_de_elim->next;
+                free(vag_de_elim);
+            }
+            if (poz_vag_de_elim == 1) {
+                station->platforms[peron]->train_cars = vag_de_elim->next;
+                free(vag_de_elim);
+            }
+        } else {
+            TTrainCar aux2;
+            while (gasit == 0) {
+                pos = 1;
+                aux2 = station->platforms[peron]->train_cars;
+                greutate_de_eleim = greutate_de_eleim+1;
+                while (aux2 != NULL && gasit == 0) {
+                    if (greutate_de_eleim == aux2->weight) {
+                        gasit = 1;
+                        poz = pos;
+                        vag_elim2 = aux2;
+                    }
+                    aux2 = aux2->next;
+                    pos++;
+                }
+            }
+            if (poz == 1) {
+                station->platforms[peron]->train_cars = vag_elim2->next;
+                free(vag_elim2);
+            } else {
 
-
+            }
+            printf("-----pos vag de elim dupa cautare = %d----------\n" , poz);
+        }
     }
 }
