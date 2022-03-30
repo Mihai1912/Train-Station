@@ -34,7 +34,12 @@ TrainStation* open_train_station(int platforms_no) {
 void close_train_station(TrainStation *station) {
     TTrainStation statie = station;
     for (int i = 0; i < statie->platforms_no; ++i) {
-        free(statie->platforms[i]->train_cars);
+        while (statie->platforms[i]->train_cars != NULL) {
+            TTrainCar aux;
+            aux = statie->platforms[i]->train_cars;
+            statie->platforms[i]->train_cars = statie->platforms[i]->train_cars->next;
+            free(aux);
+        }
         free(statie->platforms[i]);
     }
     free(statie->platforms);
@@ -76,6 +81,7 @@ void arrive_train(TrainStation *station, int platform, int locomotive_power) {
     if (platform >= 0 && platform < statie->platforms_no) {
         if (statie->platforms[platform]->locomotive_power == -1) {
             statie->platforms[platform]->locomotive_power=locomotive_power;
+            statie->platforms[platform]->train_cars = NULL;
         }
     }
 }
@@ -108,9 +114,10 @@ void leave_train(TrainStation *station, int platform) {
  */
 void add_train_car(TrainStation *station, int platform, int weight) {
     TTrainStation statie = station;
+    TTrainCar newCar;
     if ( platform >= 0 && platform < statie->platforms_no ) {
         if ( statie->platforms[platform]->locomotive_power != -1 ) {
-            TTrainCar list = statie->platforms[platform]->train_cars ,  newCar;
+            TTrainCar list = statie->platforms[platform]->train_cars;
             newCar = (TTrainCar) malloc(sizeof (TrainCar));
             newCar->weight = weight;
             newCar->next = NULL;
