@@ -414,7 +414,7 @@ int find_heaviest_sequence_train(TrainStation *station, int cars_no, TrainCar **
     TTrainStation statie = station;
     TTrainCar vagoane , aux , tmp , q , prev;
     TTrainCar t = NULL;
-    int contor = 1 , greutate_vag_secv_cont , greutate_max = 0 , peron = -1, lungime=0 , dim = 0 , dim_max=0;
+    int contor = 1 , greutate_vag_secv_cont , greutate_max = 0 , peron = -1 , dim = 0 , dim_max=0;
     for (int i = 0; i < statie->platforms_no; ++i) {
         q = statie->platforms[i]->train_cars;
         dim = 0;
@@ -463,6 +463,48 @@ int find_heaviest_sequence_train(TrainStation *station, int cars_no, TrainCar **
 
 void order_train(TrainStation *station, int platform) {
     int contor , nodeContor , aux ,lungime = 0;
+    TTrainCar node , current , next , lun , prev;
+    node = station->platforms[platform]->train_cars;
+    lun = node;
+    while (lun != NULL) {
+        lun = lun->next;
+        lungime++;
+    }
+    if (lungime == 2) {
+        current = node;
+        next = node->next;
+        if (current->weight < next->weight) {
+            next->next = current;
+            current->next = NULL;
+            station->platforms[platform]->train_cars = next;
+        }
+    }
+    if (lungime > 2) {
+        for (nodeContor = lungime - 1; nodeContor >= 0  ; nodeContor--) {
+            current = station->platforms[platform]->train_cars;
+            prev = NULL;
+            for (contor = 0; contor < nodeContor; ++contor) {
+                next = current->next;
+                if (current->weight <= next->weight) {
+                    if (contor == 0) {
+                        current->next = next->next;
+                        next->next = current;
+                        station->platforms[platform]->train_cars = next;
+                        prev = next;
+                    } else {
+                        prev->next = next;
+                        current->next = next->next;
+                        next->next = current;
+                        prev = prev->next;
+                    }
+                } else {
+                    prev = current;
+                    current = current->next;
+                }
+            }
+        }
+    }
+    /*int contor , nodeContor , aux ,lungime = 0;
     TTrainCar node , current , next , lun;
     node = station->platforms[platform]->train_cars;
     lun = node;
@@ -493,7 +535,7 @@ void order_train(TrainStation *station, int platform) {
                 next = next->next;
             }
         }
-    }
+    }*/
 }
 
 
@@ -502,7 +544,8 @@ void order_train(TrainStation *station, int platform) {
  * station: gara existenta
  */
 void fix_overload_train(TrainStation *station) {
-    int peron = find_overload_train(station) , greutate = 0 , greutate_de_eleim , gasit = 0 , tmp=1  , poz_vag_de_elim , pos = 1 , poz;
+    int peron = find_overload_train(station), greutate = 0, greutate_de_eleim, gasit = 0, tmp=1, poz_vag_de_elim;
+    int pos = 1, poz;
     TTrainCar aux , aux1 , vag_de_elim , prev , vag_elim2 , prev2;
     if (peron != -1) {
         aux = station->platforms[peron]->train_cars;

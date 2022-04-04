@@ -1,1 +1,58 @@
-o sa completez
+arrive_train : In funcția arrive_train am verificat dacă platforma data este mai mare sau egala decat 0 și mai mică
+decat numărul maxim de peroane ir dacă sunt îndeplinite aceste cerințe se verifica dacă valoarea puterii locomotivei
+este diferită de -1 valoare cu care au fost inițiate neputând sa aibe val -1 și apoi sa de valoarea dorita
+
+leave_train : In functia leave_train am verificat conditiile de existenta ale peronului apoi se seteaza valoarea
+locomotivei pe -1 pentru ca sa nu mai fie afisata iar apoi se elimina vagon cu vagon daca este cazul
+
+add_train_car : In functia add_train_carse verifica existenta peronului si daca locomotiva are lavoarea diferita de -1
+pentru a lega vagoanele de ea , apoi se face un nou nod de lista daca lista este nula se adauga noul element la lista ,
+daca nu este nula se trece in urmatoarea pozitie a listi si se adauga
+
+remove_train_cars : In functa remove_train_cars se verifica exitenta platformei si a locomotivei iar apoi se face un
+while in care se elimina primele vagoane care au greutatea egala cu greutatea data , iar apoi un alt while in care se
+verifica daca greutatea vagonului urmator este egala cu greutatea de eliminat daca este adevarat acest vagon
+se elimaina
+
+move_train_cars : In functia move_train_cars se calculeaza lungimea listei apoi se verifica respectarea conditiilor de
+intrare in functie apoi se verifica existenta listei din care vrem sa luam secventa de mutat , iar apoi se verifica
+daca pos de unde se va muta este 1 sau mai mare daca aceasta este egala cu 1 se va parcurge numarul de elemente care
+se vor muta si se vor elimina respectivele vagoane , daca pozitia de unde se va muta este mai mare decat 1 se va
+parcurge secventa de vagoane pana in punctul de unde se vor scaote vagoanele , si se va parcurge numarul de vagoane
+de mutat , iar la sfarsit se vor scoate elementele de mutat , se va memoreaza adresa de unde se va muta , in
+urmatoarea secventa se va verifica daca exista lista unde se va insera , daca numarul de vagoane este 1 se va
+verifica daca pozitia este 1 sau mai mare si apoi se insereaza , daca numarul de vagoane este mai mare de 1 se va
+verifica daca pozitia de inserat este 1 se parcurge secventa de mutat pentru numarul de vagoane si se lipesc de
+lista unde trebui inserat , daca pozitia de inserat este mai mare decat 1 se parcurge secventa pana la pozitia de
+inserat si se va insera secventa de vagoane , iar daca lista de inserat este nula aceasta este egalata cu lista de
+vagoane de mutat.
+
+find_express_train : In functia find_express_train se vrifica daca statia exista iar apoi se ia ficare peron in parte
+si de calculeaza greutatea fiecarei secvemte de vagoane iar apoi se face diferenta intre puterea locomotivei si
+greutate , iar apoi se memoreaza peronul pe care diferenta este maxima
+
+find_overloade_train : In functia find_overloade_train se parcurge fiecare peron si pe fiecare peron se calculeaza
+greutatea secvemtei de vagoane iar unde greutatea este mai mare decat puterea se memoreaza peronul iar apoi daca
+peronul este diferit de -1 se returneaza peronul iar daca nu exista tren supraincarcat se intoarce valoare -1
+
+find_optimal_train : In functia find_optimal_train se vrifica daca statia exista iar apoi se ia ficare peron in parte
+si de calculeaza greutatea fiecarei secvemte de vagoane iar apoi se face diferenta intre puterea locomotivei si
+greutate , iar apoi se memoreaza peronul pe care diferenta este minima , si se intoarce peronul.
+
+find_heaviest_sequence_train : In functia find_heaviest_sequence_train  se va calcula dimensiunea maxima a secventei
+de vagoane iar daca secventa de vagoane este mai mare de cars_no se intrerupe functia , apoi se parcurge fiecare peron
+si se parcurge lista cu un while care se va muta cu o pozitie inainte dupa ce se realizeaza un alt while care
+calculeaza suma greutatilor vagoaneor pentru cars_no vagoane , si se memoreaza greutatea maxima si un pointer catre
+vagonul de la care incepe secvemta de greutate maxima
+
+oreder_train : In functia oreder_train se va calcula lungimea listei daca lungimea listei este 2 se verifica daca
+greutate vagonului curent este mai mica decat greutatea vagonului urmator si daca este adevarat se inverseaza ,
+iar daca lista are lungime mai mare de 2 aplic algoritmul bubble sort parcurgand lista iar cand se intalneste situatia
+cand greutatea vagonului curent este mai mica decat valoarea greutatii urmatorului vagon se vor schimba vagoanele.
+
+fix_overloade_train : In functie fix_overloade_train se apeleaza functia find_overloade_train unde se va memora
+valoarea peronului , pe peronul in care este cazul sa fie overloade se calculeaza greutatea secventei de vagoane si
+se calculeaza greutatea care trebuie sa fie eliminata , apoi se parcurge lista de vagoane si daca se gaseste un vagon
+cu greutatea egala cu greutatea de eliminat se elimina vagonul respectiv , daca nu se gaseste un vagon cu greutatea
+egala cu greutatea de eliminat se va adauga 1 la greutatea de eliminat si se va repeta cautarea si eliminarea.
+
